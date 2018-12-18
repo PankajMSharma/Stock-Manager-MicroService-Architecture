@@ -25,16 +25,17 @@ import yahoofinance.YahooFinance;
 @RequestMapping("/rest/stock")
 public class StockResource {
 	
+	//Needed to query db-service
 	@Autowired
 	RestTemplate restTemplate;
 
 	@GetMapping("/{username}")
 	public List<Stock> getStock(@PathVariable("username") final String userName) {
 		
-		ResponseEntity<List<String>> quoteResponse = restTemplate.exchange("http://localhost:8300/rest/db" + userName,
-				HttpMethod.GET,
-				null, new ParameterizedTypeReference<List<String>>() {
-				});
+		ResponseEntity<List<String>> quoteResponse = restTemplate.exchange("http://localhost:8300/rest/db/" + userName,
+													HttpMethod.GET,
+													null, new ParameterizedTypeReference<List<String>>() {
+													});
 		
 		List<String> quotes = quoteResponse.getBody();
 		return quotes.stream()
